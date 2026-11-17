@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syntax Lab ✨ English Department Interactive Courseware</title>
+    <!-- Tailwind CSS CDN with custom extensions -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Top Sticky Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-200/80 dark:border-slate-800/80 transition-all">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+            <!-- Brand & Course Tag -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-brand-500/20">
+                    S<span class="text-xs">x</span>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-heading font-black text-lg tracking-tight bg-gradient-to-r from-brand-600 to-indigo-600 dark:from-brand-400 dark:to-indigo-400 bg-clip-text text-transparent">SyntaxLab</span>
+                        <span class="text-[10px] uppercase font-mono font-bold px-2 py-0.5 rounded-full bg-brand-100 dark:bg-brand-950/80 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800">Prodi B. Inggris</span>
+                    </div>
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">Interactive Sentence Architecture for Gen-Z Scholars</div>
+                </div>
+            </div>
+
+            <!-- Center Navigation (Desktop) -->
+            <nav class="hidden md:flex items-center gap-1 bg-slate-100/80 dark:bg-slate-900/80 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+                <button data-target="tab-intro" class="nav-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 bg-brand-600 text-white shadow-sm">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <span>1. Vibe Check</span>
+                </button>
+                <button data-target="tab-phrases" class="nav-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800">
+                    <i data-lucide="boxes" class="w-3.5 h-3.5"></i>
+                    <span>2. LEGO Bricks</span>
+                </button>
+                <button data-target="tab-tree" class="nav-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800">
+                    <i data-lucide="git-fork" class="w-3.5 h-3.5"></i>
+                    <span>3. Tree Architect</span>
+                </button>
+                <button data-target="tab-clauses" class="nav-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800">
+                    <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                    <span>4. Clause Lab</span>
+                </button>
+                <button data-target="tab-arcade" class="nav-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800">
+                    <i data-lucide="gamepad-2" class="w-3.5 h-3.5 text-amber-500"></i>
+                    <span class="font-bold text-brand-600 dark:text-brand-400">5. The Arcade 🎮</span>
+                </button>
+            </nav>
+
+            <!-- Action Controls (XP, Audio, Glossary, Theme, Mobile Toggle) -->
+            <div class="flex items-center gap-2">
+                <!-- User XP Counter -->
+                <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/80 text-amber-900 dark:text-amber-200 text-xs font-bold font-mono">
+                    <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500 fill-amber-500"></i>
+                    <span id="user-xp-badge">0 XP</span>
+                </div>
+
+                <!-- Glossary Button -->
+                <button onclick="window.openGlossary()" title="Syntax Glossary" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-all">
+                    <i data-lucide="book-open" class="w-4 h-4"></i>
+                </button>
+
+                <!-- Sound Mute Toggle -->
+                <button id="sound-toggle-btn" onclick="const m = window.soundFx.toggleMute(); this.innerHTML = m ? '<i data-lucide=\'volume-x\' class=\'w-4 h-4 text-slate-400\'></i>' : '<i data-lucide=\'volume-2\' class=\'w-4 h-4 text-emerald-500\'></i>'; if(window.lucide) window.lucide.createIcons();" title="Toggle Sound FX" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-all">
+                    <i data-lucide="volume-2" class="w-4 h-4 text-emerald-500"></i>
+                </button>
+
+                <!-- Theme Toggle -->
+                <button id="theme-toggle-btn" onclick="window.app.toggleTheme()" title="Toggle Theme" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-all">
+                    <i data-lucide="moon" class="w-4 h-4"></i>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800">
+                    <i data-lucide="menu" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sticky Lesson Progress Sub-bar -->
+        <div class="h-1 w-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+            <div id="lesson-progress-bar" class="h-full bg-gradient-to-r from-brand-600 to-indigo-500 transition-all duration-300" style="width: 20%;"></div>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobile-nav-menu" class="hidden md:hidden px-4 py-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 space-y-1">
+            <button onclick="window.app.switchTab('tab-intro')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 hover:bg-brand-50 dark:hover:bg-brand-950">
+                <i data-lucide="sparkles" class="w-4 h-4 text-brand-600"></i>
+                <span>1. Vibe Check: What is Syntax?</span>
+            </button>
+            <button onclick="window.app.switchTab('tab-phrases')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 hover:bg-brand-50 dark:hover:bg-brand-950">
+                <i data-lucide="boxes" class="w-4 h-4 text-brand-600"></i>
+                <span>2. The LEGO Bricks: Phrases & Constituents</span>
+            </button>
+            <button onclick="window.app.switchTab('tab-tree')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 hover:bg-brand-50 dark:hover:bg-brand-950">
+                <i data-lucide="git-fork" class="w-4 h-4 text-brand-600"></i>
+                <span>3. Tree Architect: Trees & Ambiguity</span>
+            </button>
+            <button onclick="window.app.switchTab('tab-clauses')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 hover:bg-brand-50 dark:hover:bg-brand-950">
+                <i data-lucide="layers" class="w-4 h-4 text-brand-600"></i>
+                <span>4. Clause Lab: Sentence Types</span>
+            </button>
+            <button onclick="window.app.switchTab('tab-arcade')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950">
+                <i data-lucide="gamepad-2" class="w-4 h-4 text-amber-500"></i>
+                <span>5. The Arcade: Interactive Games 🎮</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8">
+
+        <!-- ==================== TAB 1: INTRO (VIBE CHECK) ==================== -->
+        <section id="tab-intro" class="tab-pane space-y-8 animate-fadeIn">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-brand-900 via-indigo-900 to-slate-900 text-white shadow-xl shadow-brand-950/20">
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/30 border border-brand-400/40 text-xs font-mono font-medium text-brand-200">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        Module 01 • Introduction to English Syntax
+                    </div>
+                    <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+                        Why English Sentences Make Sense <br>
+                        <span class="bg-gradient-to-r from-amber-300 via-rose-300 to-brand-300 bg-clip-text text-transparent">(Or Totally Glitch Out)</span>
+                    </h1>
+                    <p class="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
+                        Pernah mikir nggak, kenapa <span class="text-amber-300 font-mono font-bold">"She spilled the tea"</span> terdengar normal banget, tapi kalau dibalik jadi <span class="text-rose-400 font-mono font-bold">"Tea spilled she the"</span> otak kita langsung nge-lag? It's not magic, it's <strong>SYNTAX</strong> — the invisible blueprint running inside your brain!
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="window.app.switchTab('tab-phrases')" class="px-5 py-2.5 rounded-xl bg-white text-brand-900 font-bold text-xs shadow-md hover:bg-brand-50 transition-all flex items-center gap-2">
+                            <span>Mulai Eksplorasi Materi</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="window.app.switchTab('tab-arcade')" class="px-5 py-2.5 rounded-xl bg-brand-800/80 hover:bg-brand-700/80 border border-brand-600/60 text-white font-semibold text-xs transition-all flex items-center gap-2">
+                            <i data-lucide="gamepad" class="w-4 h-4 text-amber-400"></i>
+                            <span>Langsung Coba Mini Games</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Background decorative elements -->
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute right-12 top-8 text-7xl opacity-15 hidden sm:block select-none font-mono">
+                    [S [NP] [VP]]
+                </div>
+            </div>
+
+            <!-- Bento Grid 1: The Core Vibe of Syntax -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Card 1: Prescriptive vs Descriptive -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-100 dark:bg-brand-950 flex items-center justify-center text-brand-600 dark:text-brand-400">
+                        <i data-lucide="scale" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-extrabold text-lg text-slate-800 dark:text-slate-100">Prescriptive vs Descriptive</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        <strong>Prescriptive Grammar:</strong> "Polisi tata bahasa" yang kaku (e.g. <em>'Never end a sentence with a preposition!'</em>). <br><br>
+                        <strong>Descriptive Grammar:</strong> Cara linguist modern bekerja — kita mengamati bagaimana manusia <em>actually</em> menyusun bahasa secara natural (No cap, descriptive is where the real fun is!).
+                    </p>
+                    <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 text-[11px] font-mono text-slate-500">
+                        Rule: "Who did you go with?" ✅ (Descriptive standard)
+                    </div>
+                </div>
+
+                <!-- Card 2: Competence vs Performance -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                        <i data-lucide="brain-circuit" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-extrabold text-lg text-slate-800 dark:text-slate-100">Chomsky's Big Distinction</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        <strong>Linguistic Competence:</strong> Pengetahuan sistemik bawah sadar penutur asli tentang aturan sintaksis bahasa mereka. <br><br>
+                        <strong>Linguistic Performance:</strong> Apa yang keluar saat ngomong (sering ada typo, kepeleset lidah / slips of the tongue saat grogi).
+                    </p>
+                    <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                        Syntax studies your underlying Competence!
+                    </div>
+                </div>
+
+                <!-- Card 3: English Word Order Typology (SVO) -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-600 dark:text-amber-400">
+                        <i data-lucide="shuffle" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-extrabold text-lg text-slate-800 dark:text-slate-100">English is SVO Core</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Bahasa Inggris sangat bergantung pada <strong>Word Order</strong> karena infleksi kasusnya sudah banyak hilang dalam sejarah evolusinya.
+                    </p>
+                    <div class="space-y-1.5 text-xs font-mono">
+                        <div class="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                            "The dog bit the man" 🐕➡️🧑
+                        </div>
+                        <div class="p-2 rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
+                            "The man bit the dog" 🧑➡️🐕 (Beda makna drastis!)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chomsky Riddle Spotlight -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border-2 border-brand-100 dark:border-slate-800 shadow-sm">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-5">
+                    <div>
+                        <div class="text-xs font-bold font-mono uppercase tracking-wider text-brand-600 dark:text-brand-400">The Iconic Mind-Bender of 1957</div>
+                        <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 mt-1">
+                            "Colorless green ideas sleep furiously."
+                        </h2>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300 text-xs font-mono font-bold border border-brand-200 dark:border-brand-800">
+                        Noam Chomsky
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                            <i data-lucide="help-circle" class="w-4 h-4 text-brand-600"></i>
+                            <span>Kenapa Kalimat Ini Penting Banget di Prodi Bahasa Inggris?</span>
+                        </h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Secara makna (<strong>Semantics</strong>), kalimat ini sama sekali nggak masuk akal: mana ada ide yang berwarna hijau sekaligus tidak berwarna (colorless)? Dan bagaimana ide bisa tidur secara mengamuk (furiously)?
+                        </p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Tapi bagi otak kita, kalimat ini <strong>terasa sah sebagai kalimat bahasa Inggris</strong>. Kenapa? Karena struktur sintaksisnya sempurna mengikuti formula:
+                        </p>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 font-mono text-xs text-brand-700 dark:text-brand-300 border border-slate-200 dark:border-slate-700">
+                            [NP [Adj Colorless] [Adj green] [N ideas]] + [VP [V sleep] [Adv furiously]]
+                        </div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-slate-800/60 dark:to-slate-800/40 border border-brand-100 dark:border-slate-700 flex flex-col justify-between">
+                        <div>
+                            <div class="text-xs font-bold text-brand-900 dark:text-brand-200 mb-1">⚡ Core Takeaway</div>
+                            <div class="text-sm font-extrabold text-slate-800 dark:text-slate-100 leading-snug">
+                                "Syntax is autonomous from Semantics."
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+                                Sebuah kalimat bisa grammatical (taat kaidah sintaksis) meskipun isinya nonsense. Sebaliknya, kalimat bisa dimengerti maksudnya tapi ungrammatical (misal: <em>"Me want sleep now"</em>).
+                            </p>
+                        </div>
+                        <div class="pt-4 flex justify-end">
+                            <button onclick="window.app.switchTab('tab-phrases')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1">
+                                <span>Lanjut ke Pembahasan Frasa (Constituents)</span>
+                                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form vs Function Quick Matrix -->
+            <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-extrabold text-base text-slate-800 dark:text-slate-100">Jangan Ketuker: Category (Form) vs Function</h3>
+                        <p class="text-xs text-slate-500">Kunci anti-blunder mahasiswa semester 2 & 3 saat ujian Syntax!</p>
+                    </div>
+                    <span class="text-xs font-mono text-brand-600 font-bold">Cheat Sheet</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700 space-y-2">
+                        <div class="font-bold text-brand-600 dark:text-brand-400 flex items-center gap-1.5">
+                            <i data-lucide="tag" class="w-4 h-4"></i>
+                            <span>CATEGORY / FORM ("What it IS")</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300">
+                            Kelas kata atau jenis frasa yang melekat pada unit tersebut:
+                        </p>
+                        <ul class="list-disc list-inside space-y-1 font-mono text-slate-700 dark:text-slate-300">
+                            <li>Noun (N), Verb (V), Adjective (Adj)</li>
+                            <li>Noun Phrase (NP), Verb Phrase (VP), Prepositional Phrase (PP)</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700 space-y-2">
+                        <div class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                            <i data-lucide="activity" class="w-4 h-4"></i>
+                            <span>FUNCTION ("What it DOES")</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300">
+                            Peran relasional yang dimainkan di dalam kalimat tertentu:
+                        </p>
+                        <ul class="list-disc list-inside space-y-1 font-mono text-slate-700 dark:text-slate-300">
+                            <li>Subject, Predicate, Direct Object, Indirect Object</li>
+                            <li>Subject Complement, Adverbial Adjunct</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 text-xs text-amber-900 dark:text-amber-200 flex items-center gap-2">
+                    <i data-lucide="lightbulb" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+                    <span><strong>Contoh Nyata:</strong> Dalam <em>"Cooking is my passion"</em>, kata <strong>Cooking</strong> secara Form adalah Verb-ing (Gerund), tapi secara Function ia bertindak sebagai <strong>Subject</strong>!</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 2: THE LEGO BRICKS (PHRASES & CONSTITUENCY) ==================== -->
+        <section id="tab-phrases" class="tab-pane hidden space-y-8 animate-fadeIn">
+            <!-- Header -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg space-y-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-xs font-mono font-medium">
+                    Module 02 • Constituents & Phrases
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-black">
+                    Sentences Are Made of LEGO Bricks, Not Flat Strings!
+                </h2>
+                <p class="text-xs sm:text-sm text-violet-100 max-w-2xl leading-relaxed">
+                    Kalimat bahasa Inggris bukan sekadar deretan kata horizontal seperti gerbong kereta api. Kata-kata mengelompok menjadi unit struktural bernama <strong>Constituents (Phrases)</strong>.
+                </p>
+            </div>
+
+            <!-- 5 Essential Phrase Types -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-extrabold text-lg text-slate-800 dark:text-slate-100">5 Anatomi Frasa Inti (Phrasal Categories)</h3>
+                    <span class="text-xs text-slate-500 font-mono">Setiap frasa punya "HEAD"</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- NP -->
+                    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5 hover:border-brand-400 transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono font-black text-sm px-2.5 py-1 rounded-lg bg-brand-100 dark:bg-brand-950 text-brand-700 dark:text-brand-300">NP</span>
+                            <span class="text-[11px] font-mono text-slate-400">Noun Phrase</span>
+                        </div>
+                        <div class="text-xs text-slate-600 dark:text-slate-300">
+                            <strong>Head:</strong> Noun atau Pronoun.<br>
+                            Bisa didahului Determiner (the, a, this) dan Adjective Phrase.
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 text-xs font-mono text-slate-700 dark:text-slate-200">
+                            "[The aesthetic vintage camera]"
+                        </div>
+                    </div>
+
+                    <!-- VP -->
+                    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5 hover:border-brand-400 transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono font-black text-sm px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">VP</span>
+                            <span class="text-[11px] font-mono text-slate-400">Verb Phrase</span>
+                        </div>
+                        <div class="text-xs text-slate-600 dark:text-slate-300">
+                            <strong>Head:</strong> Verb.<br>
+                            Membawa Complement (Object) dan Adjunct (Keterangan).
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 text-xs font-mono text-slate-700 dark:text-slate-200">
+                            "[streamed the playlist all night]"
+                        </div>
+                    </div>
+
+                    <!-- PP -->
+                    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5 hover:border-brand-400 transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono font-black text-sm px-2.5 py-1 rounded-lg bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">PP</span>
+                            <span class="text-[11px] font-mono text-slate-400">Prepositional Phrase</span>
+                        </div>
+                        <div class="text-xs text-slate-600 dark:text-slate-300">
+                            <strong>Head:</strong> Preposition.<br>
+                            Diikuti oleh NP sebagai objek preposisi: <em>P + NP</em>.
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 text-xs font-mono text-slate-700 dark:text-slate-200">
+                            "[under the radar]" / "[at 2 AM]"
+                        </div>
+                    </div>
+
+                    <!-- AdjP -->
+                    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5 hover:border-brand-400 transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono font-black text-sm px-2.5 py-1 rounded-lg bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">AdjP</span>
+                            <span class="text-[11px] font-mono text-slate-400">Adjective Phrase</span>
+                        </div>
+                        <div class="text-xs text-slate-600 dark:text-slate-300">
+                            <strong>Head:</strong> Adjective.<br>
+                            Bisa memiliki Degree Adverb sebagai modifier (very, super).
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 text-xs font-mono text-slate-700 dark:text-slate-200">
+                            "[extremely chaotic]"
+                        </div>
+                    </div>
+
+                    <!-- AdvP -->
+                    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5 hover:border-brand-400 transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono font-black text-sm px-2.5 py-1 rounded-lg bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300">AdvP</span>
+                            <span class="text-[11px] font-mono text-slate-400">Adverb Phrase</span>
+                        </div>
+                        <div class="text-xs text-slate-600 dark:text-slate-300">
+                            <strong>Head:</strong> Adverb.<br>
+                            Memodifikasi Verb, Adjective, atau seluruh klausa.
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 text-xs font-mono text-slate-700 dark:text-slate-200">
+                            "[quite suspiciously]"
+                        </div>
+                    </div>
+
+                    <!-- The Golden Rule: Headedness -->
+                    <div class="p-5 rounded-2xl bg-gradient-to-br from-brand-50 to-indigo-50 dark:from-slate-800/80 dark:to-slate-800/60 border border-brand-200 dark:border-slate-700 shadow-sm space-y-2">
+                        <div class="text-xs font-bold text-brand-800 dark:text-brand-300 flex items-center gap-1.5">
+                            <i data-lucide="crown" class="w-4 h-4 text-amber-500"></i>
+                            <span>The Head Principle</span>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Setiap frasa pasti punya satu <strong>HEAD (Kepala Frasa)</strong> yang menentukan identitas dan sifat gramatikal seluruh kelompok kata tersebut. Tanpa Head, frasa runtuh!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Constituency Tester Simulator -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border-2 border-brand-200 dark:border-slate-800 shadow-sm space-y-5">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 text-xs font-bold font-mono text-brand-600 dark:text-brand-400">
+                            <i data-lucide="flask-conical" class="w-4 h-4"></i>
+                            <span>CONSTITUENCY TEST LAB</span>
+                        </div>
+                        <h3 class="text-xl font-black text-slate-800 dark:text-slate-100 mt-1">
+                            Bagaimana Membuktikan Sekelompok Kata Itu Satu Frasa?
+                        </h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-mono">Pilih target untuk menguji:</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5" id="constituency-test-select">
+                    <!-- Dynamic buttons injected by js/syntax-tree.js -->
+                </div>
+
+                <div id="constituency-results">
+                    <!-- Results rendered by js/syntax-tree.js -->
+                </div>
+
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 text-xs text-slate-600 dark:text-slate-300 space-y-1.5">
+                    <div class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                        <i data-lucide="info" class="w-4 h-4 text-brand-600"></i>
+                        <span>3 Tes Sakral Constituency dalam Linguistik:</span>
+                    </div>
+                    <p>1. <strong>Substitution Test:</strong> Bisakah seluruh deretan kata itu diganti dengan satu kata ganti (pronoun seperti <em>it, she, they, do so, then, there</em>)?</p>
+                    <p>2. <strong>Movement / Cleft Test:</strong> Bisakah sekelompok kata itu dipindahkan bersama-sama ke depan (fronting) atau diapit konstruksi <em>"It was [X] that..."</em> tanpa merusak kalimat?</p>
+                    <p>3. <strong>Standalone (Fragment) Test:</strong> Bisakah potongan kata itu menjadi jawaban lengkap dan natural atas sebuah pertanyaan?</p>
+                </div>
+            </div>
+
+            <!-- Next navigation -->
+            <div class="flex justify-end pt-2">
+                <button onclick="window.app.switchTab('tab-tree')" class="px-6 py-3 rounded-2xl bg-brand-600 text-white font-bold text-xs shadow-md shadow-brand-200 dark:shadow-none hover:bg-brand-700 transition-all flex items-center gap-2">
+                    <span>Lanjut ke Tree Diagrams & Ambiguity</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 3: TREE ARCHITECT (SYNTAX TREES & AMBIGUITY) ==================== -->
+        <section id="tab-tree" class="tab-pane hidden space-y-8 animate-fadeIn">
+            <!-- Header -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-indigo-700 via-brand-700 to-purple-800 text-white shadow-lg space-y-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-xs font-mono font-medium">
+                    Module 03 • Tree Architect & Structural Ambiguity
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-black">
+                    Interactive Phrase Structure Trees
+                </h2>
+                <p class="text-xs sm:text-sm text-indigo-100 max-w-2xl leading-relaxed">
+                    Pohon sintaksis (Tree Diagram) memetakan hubungan hirarkis antar konstituen. Coba klik node mana saja untuk melihat peran gramatikalnya secara realtime!
+                </p>
+            </div>
+
+            <!-- Tree Diagram Sandbox -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border-2 border-brand-200 dark:border-slate-800 shadow-sm space-y-6">
+                <!-- Tree sentence selector tabs -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label class="text-xs font-bold text-slate-500 font-mono uppercase tracking-wider">Pilih Pola Pohon Sintaksis:</label>
+                        <span class="text-xs text-brand-600 font-mono font-semibold">SVG Vector Renderer</span>
+                    </div>
+                    <div id="tree-selector-tabs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                        <!-- Injected by syntax-tree.js -->
+                    </div>
+                </div>
+
+                <!-- SVG Tree Render Container -->
+                <div id="syntax-tree-svg-container" class="transition-all min-h-[300px]">
+                    <!-- Injected by syntax-tree.js -->
+                </div>
+
+                <!-- Node Info Live Card -->
+                <div id="syntax-node-info-card" class="p-4 rounded-2xl bg-brand-50/60 dark:bg-slate-800/60 border border-brand-100 dark:border-slate-700/80 min-h-[72px] flex items-center justify-center text-xs text-slate-500 font-sans">
+                    <span>💡 Klik salah satu kotak node berwarna di pohon atas untuk menginspeksi fungsinya.</span>
+                </div>
+            </div>
+
+            <!-- Deep Dive on Structural Ambiguity -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex items-center gap-2 text-xs font-bold font-mono text-amber-600 dark:text-amber-400">
+                    <i data-lucide="help-circle" class="w-4 h-4"></i>
+                    <span>LINGUISTIC MEME PHENOMENON</span>
+                </div>
+                <h3 class="text-xl font-black text-slate-800 dark:text-slate-100">
+                    Kenapa Pohon Sintaksis Bisa Menyelamatkan Kita dari Salah Paham?
+                </h3>
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Kalimat terkenal seperti <span class="font-bold text-brand-600">"I saw the man with a telescope"</span> atau berita viral <span class="font-bold text-rose-600">"Enraged cow injures farmer with axe"</span> membuktikan bahwa satu deretan kata bisa memunculkan <strong>dua cabang pohon yang sama sekali berbeda</strong>:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2">
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="font-bold text-brand-600 dark:text-brand-400 flex items-center justify-between">
+                            <span>Skenario 1: VP-Attachment</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-brand-100 dark:bg-brand-950 font-mono">Instrument</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300">
+                            Preposisi [with axe / with telescope] menempel langsung ke <strong>VP (Verb Phrase)</strong>. Artinya alat itu digunakan sebagai sarana untuk melakukan aksi (e.g. Sapi menggunakan kapak untuk menyerang petani!).
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center justify-between">
+                            <span>Skenario 2: NP-Attachment</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 font-mono">Possession / Modifier</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300">
+                            Preposisi tersebut berada <strong>di dalam kurung NP (Noun Phrase)</strong>. Artinya alat itu sedang dipegang atau dimiliki oleh orang tersebut (e.g. Petani yang sedang memegang kapak diserang sapi).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next navigation -->
+            <div class="flex justify-end pt-2">
+                <button onclick="window.app.switchTab('tab-clauses')" class="px-6 py-3 rounded-2xl bg-brand-600 text-white font-bold text-xs shadow-md shadow-brand-200 dark:shadow-none hover:bg-brand-700 transition-all flex items-center gap-2">
+                    <span>Lanjut ke Clause Types & Texting Grammar</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 4: CLAUSE LAB & TEXTING GRAMMAR ==================== -->
+        <section id="tab-clauses" class="tab-pane hidden space-y-8 animate-fadeIn">
+            <!-- Header -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-fuchsia-700 to-indigo-700 text-white shadow-lg space-y-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-xs font-mono font-medium">
+                    Module 04 • Clausal Variety & Real-World Syntax
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-black">
+                    Clause Architecture & How Gen Z Actually Texts
+                </h2>
+                <p class="text-xs sm:text-sm text-fuchsia-100 max-w-2xl leading-relaxed">
+                    Dari kalimat sederhana sampai teks obrolan di WhatsApp: bagaimana klausa independen dan dependen berkolaborasi membentuk ritme percakapan.
+                </p>
+            </div>
+
+            <!-- 4 Sentence Formulas Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Simple -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="font-extrabold text-base text-slate-800 dark:text-slate-100">1. Simple Sentence</span>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">1 Independent Clause</span>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Hanya terdiri dari satu klausa bebas (Subject + Predicate) tanpa klausa bawahan.
+                    </p>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 font-mono text-xs text-brand-600 dark:text-brand-300">
+                        "The semester finally ended."
+                    </div>
+                </div>
+
+                <!-- Compound -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="font-extrabold text-base text-slate-800 dark:text-slate-100">2. Compound Sentence</span>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">2+ Independent (FANBOYS)</span>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Dua klausa mandiri yang setara, dihubungkan dengan koordinasi (For, And, Nor, But, Or, Yet, So).
+                    </p>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 font-mono text-xs text-indigo-600 dark:text-indigo-300">
+                        "I wanted to sleep, <strong>but</strong> the syntax assignment called."
+                    </div>
+                </div>
+
+                <!-- Complex -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="font-extrabold text-base text-slate-800 dark:text-slate-100">3. Complex Sentence</span>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">1 Indep + 1+ Dependent</span>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Memiliki satu induk kalimat dan satu atau lebih anak kalimat (subordinating conjunction: because, although, since, when).
+                    </p>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 font-mono text-xs text-emerald-600 dark:text-emerald-300">
+                        "<strong>Although</strong> it was raining, they ordered iced coffee."
+                    </div>
+                </div>
+
+                <!-- Compound-Complex -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="font-extrabold text-base text-slate-800 dark:text-slate-100">4. Compound-Complex</span>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">2+ Indep + 1+ Dep</span>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Kombinasi pamungkas: beberapa klausa bebas dan setidaknya satu klausa terikat.
+                    </p>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 font-mono text-xs text-amber-600 dark:text-amber-300">
+                        "<strong>When</strong> the alarm rang, she snoozed it, <strong>and</strong> she missed the 8 AM lecture."
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case Study: Gen Z Texting & Syntax -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border-2 border-brand-100 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-xs font-bold font-mono text-brand-600 uppercase">Sociolinguistics Meets Syntax</div>
+                        <h3 class="text-lg sm:text-xl font-black text-slate-800 dark:text-slate-100 mt-0.5">
+                            "Apakah chat ala Gen-Z merusak kaidah bahasa Inggris?"
+                        </h3>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-xs font-mono font-bold">Answer: NO CAP, NO!</span>
+                </div>
+
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Banyak orang awam mengira singkatan dan slang seperti <em>"it's giving main character"</em>, <em>"no thoughts head empty"</em>, atau <em>"me when the professor arrives"</em> adalah tanda kerusakan bahasa. Padahal secara sintaksis:
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 space-y-1">
+                        <div class="font-bold text-brand-600 font-mono">1. Copula Dropping</div>
+                        <p class="text-slate-600 dark:text-slate-300"><em>"She real for that"</em> mengikuti aturan Zero Copula yang sama persis dengan dialek AAVE dan bahasa Rusia / Arab!</p>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 space-y-1">
+                        <div class="font-bold text-brand-600 font-mono">2. Nominalization</div>
+                        <p class="text-slate-600 dark:text-slate-300"><em>"Big L"</em> atau <em>"Major W"</em> mengubah huruf inisial menjadi Head Noun yang bisa dimodifikasi oleh Adjective.</p>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 space-y-1">
+                        <div class="font-bold text-brand-600 font-mono">3. Subordinate Memes</div>
+                        <p class="text-slate-600 dark:text-slate-300">Format <em>"Me when [Subordinate Clause]"</em> adalah dependent clause yang memanfaatkan konteks visual sebagai induk kalimatnya.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ready for games CTA -->
+            <div class="p-8 rounded-3xl bg-gradient-to-br from-amber-500 to-rose-500 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div class="space-y-2 text-center sm:text-left">
+                    <h3 class="text-2xl font-black">Materi Selesai! Saatnya Main Game 🎮</h3>
+                    <p class="text-xs text-amber-100 max-w-md">
+                        Uji kemampuan sintaksismu di Game Arcade. Kumpulkan XP, selesaikan 4 tantangan, dan klaim Sertifikat Resmi!
+                    </p>
+                </div>
+                <button onclick="window.app.switchTab('tab-arcade')" class="px-6 py-3.5 rounded-2xl bg-white text-slate-900 font-black text-xs shadow-lg hover:bg-amber-50 transition-all flex items-center gap-2">
+                    <i data-lucide="play" class="w-4 h-4 fill-slate-900"></i>
+                    <span>Masuk ke The Arcade Sekarang</span>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 5: THE ARCADE (INTERACTIVE GAMES) ==================== -->
+        <section id="tab-arcade" class="tab-pane hidden space-y-10 animate-fadeIn">
+            <!-- Arcade Header -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-brand-900 via-indigo-950 to-purple-950 text-white shadow-xl border border-brand-800/60 relative overflow-hidden">
+                <div class="relative z-10 max-w-2xl space-y-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs font-mono font-bold">
+                        <i data-lucide="trophy" class="w-3.5 h-3.5"></i>
+                        <span>SYNTAX ARCADE ZONE</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-black">
+                        Level Up Your Syntax Skills!
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                        Mainkan mini-games interaktif di bawah ini untuk membuktikan penguasaanmu atas materi sintaksis. Raih poin XP untuk membuka sertifikat digital!
+                    </p>
+                    <div class="pt-2 max-w-sm space-y-1.5">
+                        <div class="flex items-center justify-between text-[11px] font-mono text-slate-300">
+                            <span>Level Progress (to S-Tier)</span>
+                            <span id="arcade-xp-label" class="font-bold text-amber-300">0 / 150 XP</span>
+                        </div>
+                        <div class="h-2.5 w-full bg-slate-900/80 rounded-full overflow-hidden border border-brand-700/60 p-0.5">
+                            <div id="user-xp-bar" class="h-full bg-gradient-to-r from-amber-400 via-emerald-400 to-brand-400 rounded-full transition-all duration-300" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute right-6 top-6 text-7xl opacity-20 hidden md:block">🕹️</div>
+            </div>
+
+            <!-- Game 1: Chomsky's Vibe Check -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border-2 border-brand-200 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <div>
+                        <div class="text-[11px] font-mono font-bold text-brand-600 dark:text-brand-400">MINI-GAME 01</div>
+                        <h3 class="text-lg font-black text-slate-800 dark:text-slate-100">Chomsky's Syntax Vibe Check</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-mono">Tebak: Valid vs Rusak</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                    Tentukan apakah kalimat di bawah ini taat pada aturan struktur sintaksis bahasa Inggris (well-formed), meskipun semantik atau maknanya absurd!
+                </p>
+                <div id="chomsky-game-box" class="pt-2">
+                    <!-- Injected by js/games.js -->
+                </div>
+            </div>
+
+            <!-- Game 2: Sentence Architect (Constituent Scramble) -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border-2 border-brand-200 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <div>
+                        <div class="text-[11px] font-mono font-bold text-brand-600 dark:text-brand-400">MINI-GAME 02</div>
+                        <h3 class="text-lg font-black text-slate-800 dark:text-slate-100">Sentence Architect: Constituent Puzzle</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-mono">Susun Balok Frasa</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                    Klik balok-balok konstituen di bawah ini secara berurutan sesuai dengan formula struktur sintaksis yang diminta!
+                </p>
+                <div id="scramble-game-box" class="pt-2">
+                    <!-- Injected by js/games.js -->
+                </div>
+            </div>
+
+            <!-- Game 3: Ambiguity Decoder Gallery -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <div>
+                        <div class="text-[11px] font-mono font-bold text-amber-600 dark:text-amber-400">MINI-GAME 03</div>
+                        <h3 class="text-lg font-black text-slate-800 dark:text-slate-100">Ambiguity Decoder: Spot The Double Meaning!</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-mono">1 String, 2 Realities</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                    Berikut adalah judul-judul berita viral yang memiliki dua pohon sintaksis berbeda sehingga menghasilkan tafsir konyol:
+                </p>
+                <div id="ambiguity-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <!-- Injected by js/games.js -->
+                </div>
+            </div>
+
+            <!-- Game 4: Rapid Boss Battle Quiz -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-slate-900 dark:to-slate-900/60 border-2 border-brand-300 dark:border-brand-900/50 shadow-md space-y-4">
+                <div class="flex items-center justify-between border-b border-brand-200/60 dark:border-slate-800 pb-3">
+                    <div>
+                        <div class="text-[11px] font-mono font-bold text-brand-700 dark:text-brand-300">FINAL BOSS CHALLENGE</div>
+                        <h3 class="text-lg font-black text-slate-800 dark:text-slate-100">Rapid Fire Syntax Quiz ⚡</h3>
+                    </div>
+                    <span class="text-xs text-brand-600 font-mono font-bold">+20 XP per jawaban</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                    Jawab pertanyaan-pertanyaan konsep sintaksis untuk menyelesaikan kuis dan mencetak Sertifikat Kelulusanmu!
+                </p>
+                <div id="quiz-container" class="pt-2">
+                    <!-- Injected by js/games.js -->
+                </div>
+            </div>
+
+            <!-- Manual Certificate Open Trigger -->
+            <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
+                <div>
+                    <h4 class="font-extrabold text-sm text-slate-800 dark:text-slate-100">Ingin Langsung Buat Sertifikat?</h4>
+                    <p class="text-xs text-slate-500">Kamu bisa mencetak atau mengunduh sertifikat kapan saja dengan namamu sendiri.</p>
+                </div>
+                <button onclick="window.openCertificateModal('95')" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-md shadow-brand-200 dark:shadow-none transition-all flex items-center gap-1.5 flex-shrink-0">
+                    <i data-lucide="award" class="w-4 h-4"></i>
+                    <span>Buka Sertifikat</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-6 text-xs text-slate-500 dark:text-slate-400">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <div>
+                <span class="font-bold text-slate-700 dark:text-slate-200 font-heading">SyntaxLab • Prodi Pendidikan Bahasa Inggris</span>
+                <span class="mx-1">•</span>
+                <span>Interactive Courseware for Modern Linguistics</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="window.openGlossary()" class="hover:text-brand-600 transition-colors">Glosarium</button>
+                <button onclick="window.app.switchTab('tab-arcade')" class="hover:text-brand-600 transition-colors">Mini Games</button>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-brand-600 transition-colors">Kembali ke Atas ↑</button>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ==================== MODAL: GLOSSARY ==================== -->
+    <div id="glossary-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-fadeIn">
+            <!-- Modal Header -->
+            <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="p-2 rounded-xl bg-brand-100 dark:bg-brand-950 text-brand-600 dark:text-brand-400">
+                        <i data-lucide="book-open" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-base text-slate-800 dark:text-slate-100">Syntax Pocket Glossary</h3>
+                        <p class="text-[11px] text-slate-500 font-mono">Kamus Istilah Inti Sintaksis</p>
+                    </div>
+                </div>
+                <button onclick="window.closeGlossary()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Search input -->
+            <div class="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+                <div class="relative">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                    <input id="glossary-search" type="text" placeholder="Cari istilah (e.g. Constituent, Head, SVO, Adjunct)..." 
+                        class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
+                </div>
+            </div>
+
+            <!-- List content -->
+            <div id="glossary-list" class="p-4 overflow-y-auto space-y-2.5 max-h-[50vh] scrollbar-thin">
+                <!-- Injected by js/app.js -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 flex justify-end">
+                <button onclick="window.closeGlossary()" class="px-5 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-300">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== MODAL: CERTIFICATE GENERATOR ==================== -->
+    <div id="cert-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-fadeIn">
+            <!-- Modal Header -->
+            <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="p-2 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400">
+                        <i data-lucide="award" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-lg text-slate-800 dark:text-slate-100">Certificate of Syntactic Mastery</h3>
+                        <p class="text-xs text-slate-500">Official Achievement Award • Prodi Pendidikan Bahasa Inggris</p>
+                    </div>
+                </div>
+                <button onclick="window.closeCertificateModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Body / Controls & Preview -->
+            <div class="p-5 overflow-y-auto space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="text-[11px] font-bold text-slate-600 dark:text-slate-300 block mb-1">Nama Mahasiswa / Siswa:</label>
+                        <input id="cert-name-input" type="text" value="Anggun Sasmita" oninput="window.generateCertificatePreview()" 
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:border-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-bold text-slate-600 dark:text-slate-300 block mb-1">NIM / Jurusan / Kelas:</label>
+                        <input id="cert-nim-input" type="text" value="Prodi Pendidikan Bahasa Inggris" oninput="window.generateCertificatePreview()" 
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:border-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-bold text-slate-600 dark:text-slate-300 block mb-1">Nilai Akurasi (%):</label>
+                        <input id="cert-score-val" type="text" value="100" oninput="window.generateCertificatePreview()" 
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:border-brand-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- Canvas Preview -->
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-800 p-2 bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden">
+                    <canvas id="cert-canvas" class="w-full h-auto max-h-[420px] rounded-xl shadow-md object-contain"></canvas>
+                </div>
+            </div>
+
+            <!-- Modal Footer with Download -->
+            <div class="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 flex flex-wrap items-center justify-between gap-3">
+                <span class="text-[11px] text-slate-500 font-mono">Format: High-Res PNG (1200x800px)</span>
+                <div class="flex items-center gap-2">
+                    <button onclick="window.print()" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5">
+                        <i data-lucide="printer" class="w-4 h-4"></i>
+                        <span>Cetak / PDF</span>
+                    </button>
+                    <button onclick="window.downloadCertificate()" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-black shadow-md shadow-brand-200 dark:shadow-none flex items-center gap-1.5">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Unduh Sertifikat PNG</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/sound.js"></script>
+    <script src="js/syntax-tree.js"></script>
+    <script src="js/games.js"></script>
+    <script src="js/certificate.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Init Lucide Icons on start
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) window.lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
